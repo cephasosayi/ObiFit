@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { colors } from '../../../tokens/color-system';
 
 export interface IMealItemCardProps {
   name: string;
@@ -25,18 +26,62 @@ export const MealItemCard: React.FC<IMealItemCardProps> = ({
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`${name}, ${calories} calories, ${mealType}`}
-      className="min-h-[44px] p-4 bg-surface-container rounded-card mb-3 border border-outline-variant active:opacity-90"
+      style={styles.card}
     >
-      <View className="flex-row justify-between items-center mb-1">
-        <Text className="text-body-md font-bold text-text-primary">{name}</Text>
-        <Text className="text-body-md font-semibold text-primary-container">{calories} kcal</Text>
+      <View style={styles.header}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.calories}>{calories} kcal</Text>
       </View>
-      <View className="flex-row justify-between items-center mt-2">
-        <Text className="text-caption-sm text-text-secondary capitalize">{mealType}</Text>
-        <Text className="text-caption-sm text-text-secondary">
+      <View style={styles.footer}>
+        <Text style={styles.type}>{mealType}</Text>
+        <Text style={styles.macros}>
           P: {proteinGrams}g | C: {carbsGrams}g | F: {fatGrams}g
         </Text>
       </View>
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    minHeight: 44,
+    padding: 16,
+    backgroundColor: colors.surfaceContainer,
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.onSurface,
+    flex: 1,
+  },
+  calories: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  type: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    textTransform: 'capitalize',
+  },
+  macros: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+  },
+});

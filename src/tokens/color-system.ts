@@ -1,34 +1,42 @@
 /**
- * Color System Tokens mapped from tokens/Design-tokens.css
- * Single Source of Truth for ObiFit Color Palette
+ * Design System Color Tokens (ObiFit Single Source of Truth)
+ * Directly extracted from Tokens/design-tokens.json
  */
 
 export const colors = {
-  primary: 'var(--primary-color)',
-  onPrimary: 'var(--on-primary-color)',
-  primaryContainer: 'var(--primary-container-color)',
-  onPrimaryContainer: 'var(--on-primary-container-color)',
-  secondary: 'var(--secondary-color)',
-  onSecondary: 'var(--on-secondary-color)',
-  secondaryContainer: 'var(--secondary-container-color)',
-  onSecondaryContainer: 'var(--on-secondary-container-color)',
-  tertiary: 'var(--tertiary-color)',
-  onTertiary: 'var(--on-tertiary-color)',
-  tertiaryContainer: 'var(--tertiary-container-color)',
-  onTertiaryContainer: 'var(--on-tertiary-container-color)',
-  error: 'var(--error-color)',
-  onError: 'var(--on-error-color)',
-  background: 'var(--background-color)',
-  onBackground: 'var(--on-background-color)',
-  surface: 'var(--surface-color)',
-  onSurface: 'var(--on-surface-color)',
-  surfaceVariant: 'var(--surface-variant-color)',
-  onSurfaceVariant: 'var(--on-surface-variant-color)',
-  outline: 'var(--outline-color)',
-  outlineVariant: 'var(--outline-variant-color)',
-  surfaceContainerLow: 'var(--surface-container-low-color)',
-  surfaceContainer: 'var(--surface-container-color)',
-  surfaceContainerHigh: 'var(--surface-container-high-color)',
+  // Brand & Primary
+  primary: '#F72545', // hsl(356, 94%, 56%)
+  onPrimary: '#FFFFFF',
+  primaryContainer: '#E13845',
+  onPrimaryContainer: '#FFDAD6',
+
+  // Secondary & Tertiary
+  secondary: '#8C4A45',
+  onSecondary: '#FFFFFF',
+  secondaryContainer: '#3C2D2B',
+  onSecondaryContainer: '#FFDAD6',
+
+  tertiary: '#E5A93C',
+  onTertiary: '#1F1300',
+  tertiaryContainer: '#453000',
+  onTertiaryContainer: '#FFDF9E',
+
+  // Dark Theme Surfaces & Backgrounds
+  background: '#121214',
+  onBackground: '#EAE0DF',
+  surface: '#121214',
+  onSurface: '#EAE0DF',
+  surfaceVariant: '#382E2D',
+  onSurfaceVariant: '#D8C2C0',
+  surfaceContainerLow: '#1A1A1E',
+  surfaceContainer: '#222226',
+  surfaceContainerHigh: '#2B2B30',
+  surfaceContainerHighest: '#36363C',
+
+  // Borders & Outlines
+  outline: '#857371',
+  outlineVariant: '#4F4342',
+  error: '#FF5449',
 } as const;
 
 export type ColorToken = keyof typeof colors;

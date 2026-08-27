@@ -1,16 +1,17 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { WearableStatusTile } from '../components/ui/molecules/WearableStatusTile';
 import { useWearableSync } from '../hooks/useWearableSync';
+import { colors } from '../tokens/color-system';
 
 export const MetricsScreen: React.FC = () => {
   const { metrics, syncMetrics } = useWearableSync();
 
   return (
-    <ScrollView className="flex-1 bg-surface p-6">
-      <View className="mb-6">
-        <Text className="text-heading-xl font-bold text-text-primary">Health Metrics</Text>
-        <Text className="text-caption-sm text-text-secondary">Smartwatch Synchronization & Activity Trends</Text>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Health Metrics</Text>
+        <Text style={styles.subtitle}>Smartwatch Synchronization & Activity Trends</Text>
       </View>
 
       <WearableStatusTile
@@ -21,18 +22,54 @@ export const MetricsScreen: React.FC = () => {
         onSyncPress={() => syncMetrics(true)}
       />
 
-      <View className="p-4 bg-surface-container rounded-card border border-outline-variant">
-        <Text className="text-body-md font-bold text-text-primary mb-2">Supported Devices</Text>
-        <Text className="text-caption-sm text-text-secondary">
-          • Oraimo Health, itel Fit, Infinix Watch
-        </Text>
-        <Text className="text-caption-sm text-text-secondary">
-          • Apple Watch (iOS HealthKit)
-        </Text>
-        <Text className="text-caption-sm text-text-secondary">
-          • Fitbit & Garmin Connect
-        </Text>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Supported Wearable Hardware</Text>
+        <Text style={styles.cardItem}>• Oraimo Health, itel Fit, Infinix Watch</Text>
+        <Text style={styles.cardItem}>• Apple Watch (iOS HealthKit)</Text>
+        <Text style={styles.cardItem}>• Fitbit & Garmin Connect</Text>
       </View>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  header: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.onSurface,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    marginTop: 2,
+  },
+  card: {
+    padding: 20,
+    backgroundColor: colors.surfaceContainer,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.onSurface,
+    marginBottom: 10,
+  },
+  cardItem: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    marginBottom: 6,
+  },
+});

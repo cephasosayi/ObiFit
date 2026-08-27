@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { colors } from '../../../tokens/color-system';
 
 export interface IMacroTileProps {
   label: string;
@@ -16,14 +17,14 @@ export const MacroTile: React.FC<IMacroTileProps> = ({
 }) => {
   const percentage = Math.min(Math.round((currentGrams / targetGrams) * 100), 100);
 
-  const getVariantBg = () => {
+  const getBarColor = () => {
     switch (variant) {
       case 'protein':
-        return 'bg-primary-container';
+        return colors.primary;
       case 'carbs':
-        return 'bg-tertiary-container';
+        return colors.tertiary;
       case 'fats':
-        return 'bg-secondary-container';
+        return colors.secondary;
     }
   };
 
@@ -31,20 +32,59 @@ export const MacroTile: React.FC<IMacroTileProps> = ({
     <View
       accessibilityRole="progressbar"
       accessibilityLabel={`${label} ${currentGrams} grams of ${targetGrams} grams`}
-      className="p-4 bg-surface-container rounded-card mb-3 shadow-sm border border-outline-variant"
+      style={styles.card}
     >
-      <View className="flex-row justify-between items-center mb-2">
-        <Text className="text-body-md font-semibold text-text-primary">{label}</Text>
-        <Text className="text-caption-sm text-text-secondary">
+      <View style={styles.header}>
+        <Text style={styles.title}>{label}</Text>
+        <Text style={styles.subtitle}>
           {currentGrams}g / {targetGrams}g
         </Text>
       </View>
-      <View className="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+      <View style={styles.track}>
         <View
-          className={`h-full ${getVariantBg()}`}
-          style={{ width: `${percentage}%` }}
+          style={[
+            styles.fill,
+            { width: `${percentage}%`, backgroundColor: getBarColor() },
+          ]}
         />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    padding: 16,
+    backgroundColor: colors.surfaceContainer,
+    borderRadius: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.onSurface,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+  },
+  track: {
+    height: 8,
+    width: '100%',
+    backgroundColor: colors.surfaceContainerHighest,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  fill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+});

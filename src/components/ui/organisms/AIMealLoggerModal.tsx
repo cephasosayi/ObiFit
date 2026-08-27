@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Modal } from 'react-native';
+import { View, Text, Modal, StyleSheet } from 'react-native';
 import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
 import { Chip } from '../atoms/Chip';
+import { colors } from '../../../tokens/color-system';
 
 export interface IAIMealLoggerModalProps {
   isVisible: boolean;
@@ -33,14 +34,14 @@ export const AIMealLoggerModal: React.FC<IAIMealLoggerModalProps> = ({
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent onRequestClose={onClose}>
-      <View className="flex-1 justify-end bg-black/50">
-        <View className="bg-surface-container rounded-t-card p-6 border-t border-outline-variant">
-          <Text className="text-heading-md font-bold text-text-primary mb-2">AI Meal Parser</Text>
-          <Text className="text-caption-sm text-text-secondary mb-4">
+      <View style={styles.overlay}>
+        <View style={styles.modalContent}>
+          <Text style={styles.title}>AI Meal Parser</Text>
+          <Text style={styles.subtitle}>
             Describe your meal (e.g., &quot;Plate of Jollof rice with fried plantain and grilled chicken&quot;)
           </Text>
 
-          <View className="flex-row mb-4">
+          <View style={styles.chipRow}>
             {(['breakfast', 'lunch', 'dinner', 'snack'] as const).map((type) => (
               <Chip
                 key={type}
@@ -59,11 +60,11 @@ export const AIMealLoggerModal: React.FC<IAIMealLoggerModalProps> = ({
             numberOfLines={3}
           />
 
-          <View className="flex-row justify-between gap-3 mt-2">
-            <View className="flex-1">
+          <View style={styles.buttonRow}>
+            <View style={styles.buttonFlex}>
               <Button label="Cancel" variant="secondary" onPress={onClose} />
             </View>
-            <View className="flex-1">
+            <View style={styles.buttonFlex}>
               <Button
                 label="Parse Meal"
                 onPress={handleSubmit}
@@ -77,3 +78,44 @@ export const AIMealLoggerModal: React.FC<IAIMealLoggerModalProps> = ({
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.6)',
+  },
+  modalContent: {
+    backgroundColor: colors.surfaceContainer,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 24,
+    borderTopWidth: 1,
+    borderTopColor: colors.outlineVariant,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: colors.onSurface,
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    marginBottom: 16,
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 16,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+    marginTop: 8,
+  },
+  buttonFlex: {
+    flex: 1,
+  },
+});

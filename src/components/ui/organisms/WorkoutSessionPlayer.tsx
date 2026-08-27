@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Button } from '../atoms/Button';
 import { useAudioDucking } from '../../../hooks/useAudioDucking';
 import { use3DAvatarMemory } from '../../../hooks/use3DAvatarMemory';
+import { colors } from '../../../tokens/color-system';
 
 export interface IWorkoutSessionPlayerProps {
   routineName: string;
@@ -21,22 +22,22 @@ export const WorkoutSessionPlayer: React.FC<IWorkoutSessionPlayerProps> = ({
 
   const handleStartCue = () => {
     setIsPlaying(true);
-    triggerVoiceCue(3000); // 70% audio ducking for 3s voice cue
+    triggerVoiceCue(3000);
   };
 
   return (
-    <View className="p-6 bg-surface-container rounded-card border border-outline-variant mb-6 shadow-sm">
-      <Text className="text-heading-lg font-bold text-text-primary mb-1">{routineName}</Text>
-      <Text className="text-caption-sm text-text-secondary mb-4">
+    <View style={styles.card}>
+      <Text style={styles.routineTitle}>{routineName}</Text>
+      <Text style={styles.subtitle}>
         {durationMinutes} min session • 3D Avatar capped at {targetFPS} FPS
       </Text>
 
-      <View className="h-48 bg-surface-variant rounded-card items-center justify-center mb-4">
-        <Text className="text-body-md text-text-secondary font-medium">
+      <View style={styles.avatarContainer}>
+        <Text style={styles.avatarPlaceholder}>
           [3D Avatar Demonstrator View]
         </Text>
         {isDucked ? (
-          <Text className="text-caption-sm text-primary-container mt-2 font-bold">
+          <Text style={styles.voiceCoachBadge}>
             🎙️ Voice Coach Active (Music Ducked 70%)
           </Text>
         ) : null}
@@ -47,10 +48,54 @@ export const WorkoutSessionPlayer: React.FC<IWorkoutSessionPlayerProps> = ({
         onPress={isPlaying ? () => setIsPlaying(false) : handleStartCue}
       />
       {isPlaying ? (
-        <View className="mt-3">
+        <View style={styles.finishContainer}>
           <Button label="Finish Workout" variant="secondary" onPress={onComplete} />
         </View>
       ) : null}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    padding: 20,
+    backgroundColor: colors.surfaceContainer,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    marginBottom: 20,
+  },
+  routineTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: colors.onSurface,
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    marginBottom: 16,
+  },
+  avatarContainer: {
+    height: 180,
+    backgroundColor: colors.surfaceContainerHighest,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  avatarPlaceholder: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.onSurfaceVariant,
+  },
+  voiceCoachBadge: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.primary,
+    marginTop: 8,
+  },
+  finishContainer: {
+    marginTop: 10,
+  },
+});

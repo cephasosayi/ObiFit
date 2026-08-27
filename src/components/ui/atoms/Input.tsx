@@ -1,5 +1,6 @@
 import React from 'react';
-import { TextInput, View, Text, TextInputProps } from 'react-native';
+import { TextInput, View, Text, TextInputProps, StyleSheet } from 'react-native';
+import { colors } from '../../../tokens/color-system';
 
 export interface IInputProps extends TextInputProps {
   label?: string;
@@ -11,26 +12,52 @@ export const Input: React.FC<IInputProps> = ({
   label,
   error,
   accessibilityLabel,
-  className = '',
+  style,
   ...rest
 }) => {
   return (
-    <View className="w-full mb-4">
-      {label ? (
-        <Text className="text-caption-sm font-medium text-text-secondary mb-1">{label}</Text>
-      ) : null}
+    <View style={styles.container}>
+      {label ? <Text style={styles.label}>{label}</Text> : null}
       <TextInput
         accessibilityRole="none"
         accessibilityLabel={accessibilityLabel || label || 'Input field'}
-        className={`min-h-[44px] px-4 py-3 bg-surface-container rounded-card border text-body-md text-text-primary ${
-          error ? 'border-error' : 'border-outline-variant focus:border-outline'
-        } ${className}`}
-        placeholderTextColor="#888888"
+        style={[styles.input, error ? styles.inputError : null, style]}
+        placeholderTextColor={colors.outline}
         {...rest}
       />
-      {error ? (
-        <Text className="text-caption-sm text-error mt-1">{error}</Text>
-      ) : null}
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: colors.onSurfaceVariant,
+    marginBottom: 6,
+  },
+  input: {
+    minHeight: 44,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: colors.surfaceContainer,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    fontSize: 15,
+    color: colors.onSurface,
+  },
+  inputError: {
+    borderColor: colors.error,
+  },
+  errorText: {
+    fontSize: 12,
+    color: colors.error,
+    marginTop: 4,
+  },
+});

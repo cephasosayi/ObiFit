@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { MealItemCard } from '../components/ui/molecules/MealItemCard';
 import { Button } from '../components/ui/atoms/Button';
 import { AIMealLoggerModal } from '../components/ui/organisms/AIMealLoggerModal';
 import { useOfflineSync } from '../hooks/useOfflineSync';
+import { colors } from '../tokens/color-system';
 
 export const NutritionScreen: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,16 +21,16 @@ export const NutritionScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-surface p-6">
-      <View className="mb-6">
-        <Text className="text-heading-xl font-bold text-text-primary">Nutrition</Text>
-        <Text className="text-caption-sm text-text-secondary">AI-Powered Regional Meal Logging</Text>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Nutrition</Text>
+        <Text style={styles.subtitle}>AI-Powered Regional Meal Logging</Text>
       </View>
 
       <Button label="Log Meal with AI" onPress={() => setIsModalOpen(true)} />
 
-      <View className="mt-6">
-        <Text className="text-heading-md font-bold text-text-primary mb-3">Today&apos;s Logs</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Today&apos;s Logs</Text>
         <MealItemCard
           name="Jollof Rice & Grilled Chicken"
           calories={650}
@@ -56,3 +57,36 @@ export const NutritionScreen: React.FC = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  header: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.onSurface,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    marginTop: 2,
+  },
+  section: {
+    marginTop: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: colors.onSurface,
+    marginBottom: 12,
+  },
+});

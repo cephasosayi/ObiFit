@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable, Text, ActivityIndicator } from 'react-native';
+import { Pressable, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { colors } from '../../../tokens/color-system';
 
 export interface IButtonProps {
   label: string;
@@ -18,25 +19,25 @@ export const Button: React.FC<IButtonProps> = ({
   disabled = false,
   accessibilityLabel,
 }) => {
-  const getVariantStyles = () => {
+  const getContainerStyle = () => {
     switch (variant) {
       case 'secondary':
-        return 'bg-surface-container-high border-transparent';
+        return styles.secondaryContainer;
       case 'outline':
-        return 'bg-transparent border-2 border-outline';
+        return styles.outlineContainer;
       default:
-        return 'bg-primary-container border-transparent';
+        return styles.primaryContainer;
     }
   };
 
-  const getTextStyles = () => {
+  const getTextStyle = () => {
     switch (variant) {
       case 'secondary':
-        return 'text-text-primary font-semibold';
+        return styles.secondaryText;
       case 'outline':
-        return 'text-text-primary font-semibold';
+        return styles.outlineText;
       default:
-        return 'text-on-primary font-bold';
+        return styles.primaryText;
     }
   };
 
@@ -47,15 +48,60 @@ export const Button: React.FC<IButtonProps> = ({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel || label}
       accessibilityState={{ disabled: disabled || isLoading }}
-      className={`min-h-[44px] min-w-[44px] px-6 py-3 rounded-full flex-row items-center justify-center ${getVariantStyles()} ${
-        disabled ? 'opacity-50' : 'active:opacity-80'
-      }`}
+      style={[
+        styles.buttonBase,
+        getContainerStyle(),
+        disabled && styles.disabled,
+      ]}
     >
       {isLoading ? (
-        <ActivityIndicator size="small" color="#FFFFFF" />
+        <ActivityIndicator size="small" color={colors.onPrimary} />
       ) : (
-        <Text className={`text-body-md text-center ${getTextStyles()}`}>{label}</Text>
+        <Text style={[styles.textBase, getTextStyle()]}>{label}</Text>
       )}
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonBase: {
+    minHeight: 44,
+    minWidth: 44,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryContainer: {
+    backgroundColor: colors.primary,
+  },
+  secondaryContainer: {
+    backgroundColor: colors.surfaceContainerHigh,
+  },
+  outlineContainer: {
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: colors.outline,
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  textBase: {
+    fontSize: 15,
+    textAlign: 'center',
+  },
+  primaryText: {
+    color: colors.onPrimary,
+    fontWeight: '700',
+  },
+  secondaryText: {
+    color: colors.onSurface,
+    fontWeight: '600',
+  },
+  outlineText: {
+    color: colors.onSurface,
+    fontWeight: '600',
+  },
+});

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { colors } from '../../../tokens/color-system';
 
 export interface IWearableStatusTileProps {
   deviceName: string;
@@ -17,33 +18,100 @@ export const WearableStatusTile: React.FC<IWearableStatusTileProps> = ({
   onSyncPress,
 }) => {
   return (
-    <View className="p-4 bg-surface-container rounded-card border border-outline-variant mb-4">
-      <View className="flex-row justify-between items-center mb-3">
-        <View className="flex-row items-center">
+    <View style={styles.card}>
+      <View style={styles.header}>
+        <View style={styles.deviceRow}>
           <View
-            className={`w-3 h-3 rounded-full mr-2 ${
-              isConnected ? 'bg-primary-container' : 'bg-outline'
-            }`}
+            style={[
+              styles.dot,
+              { backgroundColor: isConnected ? colors.primary : colors.outline },
+            ]}
           />
-          <Text className="text-body-md font-bold text-text-primary">{deviceName}</Text>
+          <Text style={styles.deviceName}>{deviceName}</Text>
         </View>
-        <Text className="text-caption-sm text-text-secondary">{isConnected ? 'Connected' : 'Offline'}</Text>
+        <Text style={styles.statusText}>{isConnected ? 'Connected' : 'Offline'}</Text>
       </View>
 
-      <View className="flex-row justify-between items-center">
+      <View style={styles.body}>
         <View>
-          <Text className="text-heading-lg font-bold text-text-primary">{stepsCount.toLocaleString()}</Text>
-          <Text className="text-caption-sm text-text-secondary">Steps synced today ({lastSynced})</Text>
+          <Text style={styles.stepsText}>{stepsCount.toLocaleString()}</Text>
+          <Text style={styles.syncedText}>Steps synced today ({lastSynced})</Text>
         </View>
         <Pressable
           onPress={onSyncPress}
           accessibilityRole="button"
           accessibilityLabel={`Sync data from ${deviceName}`}
-          className="min-h-[44px] min-w-[44px] px-4 py-2 bg-secondary-container rounded-full items-center justify-center active:opacity-80"
+          style={styles.syncButton}
         >
-          <Text className="text-caption-sm font-bold text-text-primary">Sync Now</Text>
+          <Text style={styles.syncText}>Sync Now</Text>
         </Pressable>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    padding: 16,
+    backgroundColor: colors.surfaceContainer,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.outlineVariant,
+    marginBottom: 16,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  deviceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 8,
+  },
+  deviceName: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.onSurface,
+  },
+  statusText: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+  },
+  body: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  stepsText: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: colors.onSurface,
+  },
+  syncedText: {
+    fontSize: 12,
+    color: colors.onSurfaceVariant,
+    marginTop: 2,
+  },
+  syncButton: {
+    minHeight: 44,
+    minWidth: 44,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    backgroundColor: colors.secondaryContainer,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.onSecondaryContainer,
+  },
+});

@@ -1,13 +1,14 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { WorkoutSessionPlayer } from '../components/ui/organisms/WorkoutSessionPlayer';
+import { colors } from '../tokens/color-system';
 
 export const WorkoutsScreen: React.FC = () => {
   return (
-    <ScrollView className="flex-1 bg-surface p-6">
-      <View className="mb-6">
-        <Text className="text-heading-xl font-bold text-text-primary">Home Workouts</Text>
-        <Text className="text-caption-sm text-text-secondary">Science-Backed Routines & 3D Avatar Cues</Text>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Home Workouts</Text>
+        <Text style={styles.subtitle}>Science-Backed Routines & 3D Avatar Cues</Text>
       </View>
 
       <WorkoutSessionPlayer
@@ -24,3 +25,27 @@ export const WorkoutsScreen: React.FC = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  header: {
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.onSurface,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: colors.onSurfaceVariant,
+    marginTop: 2,
+  },
+});
