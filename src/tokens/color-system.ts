@@ -1,42 +1,38 @@
 /**
- * Design System Color Tokens (ObiFit Single Source of Truth)
- * Directly extracted from Tokens/design-tokens.json
+ * ObiFit Design System Tokens (Inspired by @[Inspiration] & @[Mannequin])
+ * Ultra-Premium Dark Aesthetic, Electric Crimson Red, High-Energy Lime, and Muscle Glow Orange
  */
 
 export const colors = {
-  // Brand & Primary
-  primary: '#F72545', // hsl(356, 94%, 56%)
+  // Brand & Accent Colors
+  primary: '#F72545', // Electric Neon Crimson Red
   onPrimary: '#FFFFFF',
-  primaryContainer: '#E13845',
-  onPrimaryContainer: '#FFDAD6',
+  primaryContainer: '#2B0E13',
+  onPrimaryContainer: '#FFD7DC',
 
-  // Secondary & Tertiary
-  secondary: '#8C4A45',
-  onSecondary: '#FFFFFF',
-  secondaryContainer: '#3C2D2B',
-  onSecondaryContainer: '#FFDAD6',
+  accentLime: '#CCFF00', // High-Energy Electric Lime
+  onAccentLime: '#000000',
+  
+  neonOrange: '#FF5500', // Muscle Glow & Rest Timer Neon Orange
+  onNeonOrange: '#FFFFFF',
 
-  tertiary: '#E5A93C',
-  onTertiary: '#1F1300',
-  tertiaryContainer: '#453000',
-  onTertiaryContainer: '#FFDF9E',
+  // Dark Theme Studio Backgrounds & Surfaces
+  background: '#0B0B0E',
+  onBackground: '#F4F4F6',
+  surface: '#121216',
+  onSurface: '#F4F4F6',
+  surfaceVariant: '#1A1A20',
+  onSurfaceVariant: '#A0A0B0',
+  
+  surfaceContainerLow: '#141418',
+  surfaceContainer: '#1B1B22',
+  surfaceContainerHigh: '#24242E',
+  surfaceContainerHighest: '#30303D',
 
-  // Dark Theme Surfaces & Backgrounds
-  background: '#121214',
-  onBackground: '#EAE0DF',
-  surface: '#121214',
-  onSurface: '#EAE0DF',
-  surfaceVariant: '#382E2D',
-  onSurfaceVariant: '#D8C2C0',
-  surfaceContainerLow: '#1A1A1E',
-  surfaceContainer: '#222226',
-  surfaceContainerHigh: '#2B2B30',
-  surfaceContainerHighest: '#36363C',
-
-  // Borders & Outlines
-  outline: '#857371',
-  outlineVariant: '#4F4342',
-  error: '#FF5449',
+  // Outlines & Utility
+  outline: '#3E3E4C',
+  outlineVariant: '#2A2A36',
+  error: '#FF453A',
 } as const;
 
 export type ColorToken = keyof typeof colors;
