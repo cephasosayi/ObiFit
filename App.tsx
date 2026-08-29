@@ -5,6 +5,7 @@ import { NutritionScreen } from './src/screens/NutritionScreen';
 import { WorkoutsScreen } from './src/screens/WorkoutsScreen';
 import { MetricsScreen } from './src/screens/MetricsScreen';
 import { AIMealLoggerModal } from './src/components/ui/organisms/AIMealLoggerModal';
+import { NavDockItem } from './src/components/ui/molecules/NavDockItem';
 import { useOfflineSync } from './src/hooks/useOfflineSync';
 import { colors } from './src/tokens/color-system';
 
@@ -47,30 +48,24 @@ export default function App() {
       {/* Screen View */}
       <View style={styles.body}>{renderScreen()}</View>
 
-      {/* Modern Floating Bottom Navigation Bar */}
+      {/* Icon-Based Floating Visual Card Navigation Dock */}
       <View style={styles.navbarWrapper}>
         <View style={styles.navbar}>
-          <Pressable
+          <NavDockItem
+            label="Home"
+            icon="🏠"
+            isActive={activeTab === 'home'}
             onPress={() => setActiveTab('home')}
-            accessibilityRole="button"
-            accessibilityLabel="Home Tab"
-            style={[styles.navItem, activeTab === 'home' && styles.navItemActive]}
-          >
-            <Text style={[styles.navIcon, activeTab === 'home' && styles.navIconActive]}>🏠</Text>
-            <Text style={[styles.navText, activeTab === 'home' && styles.navTextActive]}>Home</Text>
-          </Pressable>
+          />
 
-          <Pressable
+          <NavDockItem
+            label="Meals"
+            icon="🥗"
+            isActive={activeTab === 'nutrition'}
             onPress={() => setActiveTab('nutrition')}
-            accessibilityRole="button"
-            accessibilityLabel="Meals Tab"
-            style={[styles.navItem, activeTab === 'nutrition' && styles.navItemActive]}
-          >
-            <Text style={[styles.navIcon, activeTab === 'nutrition' && styles.navIconActive]}>🥗</Text>
-            <Text style={[styles.navText, activeTab === 'nutrition' && styles.navTextActive]}>Meals</Text>
-          </Pressable>
+          />
 
-          {/* Central Floating Plus Action Button */}
+          {/* Central Floating AI Quick Log Trigger */}
           <Pressable
             onPress={() => setIsQuickLogOpen(true)}
             accessibilityRole="button"
@@ -80,25 +75,20 @@ export default function App() {
             <Text style={styles.floatingActionIcon}>+</Text>
           </Pressable>
 
-          <Pressable
+          <NavDockItem
+            label="Workouts"
+            icon="🏋️"
+            isActive={activeTab === 'workouts'}
             onPress={() => setActiveTab('workouts')}
-            accessibilityRole="button"
-            accessibilityLabel="Workouts Tab"
-            style={[styles.navItem, activeTab === 'workouts' && styles.navItemActive]}
-          >
-            <Text style={[styles.navIcon, activeTab === 'workouts' && styles.navIconActive]}>🏋️</Text>
-            <Text style={[styles.navText, activeTab === 'workouts' && styles.navTextActive]}>Workouts</Text>
-          </Pressable>
+          />
 
-          <Pressable
+          <NavDockItem
+            label="Metrics"
+            icon="⌚"
+            isActive={activeTab === 'metrics'}
             onPress={() => setActiveTab('metrics')}
-            accessibilityRole="button"
-            accessibilityLabel="Metrics Tab"
-            style={[styles.navItem, activeTab === 'metrics' && styles.navItemActive]}
-          >
-            <Text style={[styles.navIcon, activeTab === 'metrics' && styles.navIconActive]}>⌚</Text>
-            <Text style={[styles.navText, activeTab === 'metrics' && styles.navTextActive]}>Metrics</Text>
-          </Pressable>
+            badgeDotColor={colors.accentLime}
+          />
         </View>
       </View>
 
@@ -136,7 +126,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     alignItems: 'center',
-    justify: 'space-between',
+    justifyContent: 'space-between',
     width: '100%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },

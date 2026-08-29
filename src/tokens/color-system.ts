@@ -10,8 +10,8 @@ export const colors = {
   primaryContainer: '#2B0E13',
   onPrimaryContainer: '#FFD7DC',
 
-  accentLime: '#CCFF00', // High-Energy Electric Lime
-  onAccentLime: '#000000',
+  accentLime: '#F72545', // ObiFit Signature Electric Crimson Red
+  onAccentLime: '#FFFFFF',
   
   neonOrange: '#FF5500', // Muscle Glow & Rest Timer Neon Orange
   onNeonOrange: '#FFFFFF',
@@ -28,6 +28,11 @@ export const colors = {
   surfaceContainer: '#1B1B22',
   surfaceContainerHigh: '#24242E',
   surfaceContainerHighest: '#30303D',
+
+  secondary: '#FF5500',
+  secondaryContainer: '#2B0E13',
+  onSecondaryContainer: '#FFD7DC',
+  tertiary: '#FF5500',
 
   // Outlines & Utility
   outline: '#3E3E4C',

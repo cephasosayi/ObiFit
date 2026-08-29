@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
-import { MealItemCard } from '../components/ui/molecules/MealItemCard';
-import { Button } from '../components/ui/atoms/Button';
+import { HeroCalorieCard } from '../components/ui/molecules/HeroCalorieCard';
+import { MacroSplitCarousel } from '../components/ui/molecules/MacroSplitCarousel';
+import { RegionalFoodCardImage } from '../components/ui/molecules/RegionalFoodCardImage';
+import { HydrationLiquidCard } from '../components/ui/molecules/HydrationLiquidCard';
 import { AIMealLoggerModal } from '../components/ui/organisms/AIMealLoggerModal';
 import { useOfflineSync } from '../hooks/useOfflineSync';
 import { colors } from '../tokens/color-system';
@@ -23,29 +25,61 @@ export const NutritionScreen: React.FC = () => {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Text style={styles.title}>Nutrition</Text>
-        <Text style={styles.subtitle}>AI-Powered Regional Meal Logging</Text>
+        <Text style={styles.title}>Nutrition Engine</Text>
+        <Text style={styles.subtitle}>Image-First Regional Meal & Macro Analytics</Text>
       </View>
 
-      <Button label="Log Meal with AI" onPress={() => setIsModalOpen(true)} />
+      {/* Hero Calorie Budget Card with Full-Bleed Imagery */}
+      <HeroCalorieCard
+        remainingKcal={1420}
+        consumedKcal={780}
+        targetKcal={2200}
+        burnRateKcal={480}
+        onQuickLogPress={() => setIsModalOpen(true)}
+      />
 
+      {/* Textured Macro Split Carousel */}
+      <Text style={styles.sectionTitle}>Macro Distribution</Text>
+      <MacroSplitCarousel />
+
+      {/* Dynamic Hydration Liquid Card */}
+      <HydrationLiquidCard initialMl={2250} targetMl={3000} />
+
+      {/* Image-Driven Regional Food Cards with Inline Portion Slider */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Today&apos;s Logs</Text>
-        <MealItemCard
-          name="Jollof Rice & Grilled Chicken"
-          calories={650}
-          proteinGrams={42}
-          carbsGrams={78}
-          fatGrams={18}
+        <Text style={styles.sectionTitle}>Regional Meal Logs</Text>
+
+        <RegionalFoodCardImage
+          id="meal-1"
+          title="Jollof Rice & Grilled Chicken"
+          baseCalories={650}
+          baseProtein={42}
+          baseCarbs={78}
+          baseFats={18}
           mealType="lunch"
+          imageUri="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80"
         />
-        <MealItemCard
-          name="Amala & Egusi Soup"
-          calories={720}
-          proteinGrams={35}
-          carbsGrams={85}
-          fatGrams={26}
+
+        <RegionalFoodCardImage
+          id="meal-2"
+          title="Amala & Egusi Soup"
+          baseCalories={720}
+          baseProtein={35}
+          baseCarbs={85}
+          baseFats={26}
           mealType="dinner"
+          imageUri="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&auto=format&fit=crop&q=80"
+        />
+
+        <RegionalFoodCardImage
+          id="meal-3"
+          title="Suya Beef & Plantain Chips"
+          baseCalories={480}
+          baseProtein={38}
+          baseCarbs={30}
+          baseFats={22}
+          mealType="snack"
+          imageUri="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&auto=format&fit=crop&q=80"
         />
       </View>
 
@@ -65,10 +99,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
-    paddingBottom: 100,
+    paddingBottom: 110,
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   title: {
     fontSize: 28,
@@ -81,10 +115,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   section: {
-    marginTop: 24,
+    marginTop: 8,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '800',
     color: colors.onSurface,
     marginBottom: 12,

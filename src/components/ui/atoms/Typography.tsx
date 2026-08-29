@@ -31,7 +31,6 @@ export const Typography: React.FC<ITypographyProps> = ({
   return (
     <Text
       accessibilityRole={variant.startsWith('h') ? 'header' : 'text'}
-      className={`${getVariantClass()} ${className}`}
       {...rest}
     >
       {children}
