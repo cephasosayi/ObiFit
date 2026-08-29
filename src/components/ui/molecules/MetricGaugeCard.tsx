@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../../tokens/color-system';
 
 export interface IMetricGaugeCardProps {
@@ -21,10 +22,14 @@ export const MetricGaugeCard: React.FC<IMetricGaugeCardProps> = ({
     <Pressable style={styles.card} onPress={onPress}>
       <View style={styles.headerRow}>
         <View style={styles.titleGroup}>
-          <Text style={styles.icon}>{isCalories ? '🔥' : '⏱️'}</Text>
+          <MaterialCommunityIcons
+            name={isCalories ? 'fire' : 'clock-outline'}
+            size={18}
+            color={ringColor}
+          />
           <Text style={styles.title}>{isCalories ? 'Calories' : 'Durations'}</Text>
         </View>
-        <Text style={styles.arrowIcon}>›</Text>
+        <MaterialCommunityIcons name="chevron-right" size={18} color={colors.onSurfaceVariant} />
       </View>
 
       <View style={styles.contentRow}>

@@ -38,6 +38,7 @@ export const colors = {
   outline: '#3E3E4C',
   outlineVariant: '#2A2A36',
   error: '#FF453A',
+  success: '#34C759',
 } as const;
 
 export type ColorToken = keyof typeof colors;

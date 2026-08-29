@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../../tokens/color-system';
 
 export interface IScheduledTrainingCardProps {
@@ -52,7 +53,7 @@ export const ScheduledTrainingCard: React.FC<IScheduledTrainingCardProps> = ({
           accessibilityRole="button"
           accessibilityLabel={`Start ${type} session at ${timeString}`}
         >
-          <Text style={styles.arrowIcon}>→</Text>
+          <MaterialCommunityIcons name="arrow-right" size={20} color={colors.primary} />
         </Pressable>
       </View>
     </View>

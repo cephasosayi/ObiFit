@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../../tokens/color-system';
 
 export interface INavDockItemProps {
   label: string;
-  icon: string;
+  iconOutline: keyof typeof MaterialCommunityIcons.glyphMap;
+  iconFilled: keyof typeof MaterialCommunityIcons.glyphMap;
   isActive: boolean;
   onPress: () => void;
   badgeDotColor?: string;
@@ -12,11 +14,15 @@ export interface INavDockItemProps {
 
 export const NavDockItem: React.FC<INavDockItemProps> = ({
   label,
-  icon,
+  iconOutline,
+  iconFilled,
   isActive,
   onPress,
   badgeDotColor,
 }) => {
+  const iconName = isActive ? iconFilled : iconOutline;
+  const iconColor = isActive ? colors.primary : colors.onSurfaceVariant;
+
   return (
     <Pressable
       onPress={onPress}
@@ -28,7 +34,7 @@ export const NavDockItem: React.FC<INavDockItemProps> = ({
       ]}
     >
       <View style={styles.iconWrapper}>
-        <Text style={[styles.iconText, isActive && styles.iconTextActive]}>{icon}</Text>
+        <MaterialCommunityIcons name={iconName} size={22} color={iconColor} />
         {badgeDotColor ? (
           <View style={[styles.statusDot, { backgroundColor: badgeDotColor }]} />
         ) : null}
@@ -64,14 +70,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconText: {
-    fontSize: 20,
-    opacity: 0.65,
-  },
-  iconTextActive: {
-    fontSize: 20,
-    opacity: 1,
-  },
   statusDot: {
     position: 'absolute',
     top: -2,
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
   labelTextActive: {
-    color: colors.accentLime,
+    color: colors.primary,
     fontWeight: '800',
   },
 });

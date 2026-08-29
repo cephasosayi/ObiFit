@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Pressable, StatusBar, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { NutritionScreen } from './src/screens/NutritionScreen';
 import { WorkoutsScreen } from './src/screens/WorkoutsScreen';
@@ -41,26 +42,30 @@ export default function App() {
     }
   };
 
+  const topBgColor = activeTab === 'home' ? colors.surfaceContainer : colors.background;
+
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+    <SafeAreaView style={[styles.container, { backgroundColor: topBgColor }]}>
+      <StatusBar barStyle="light-content" backgroundColor={topBgColor} />
       
       {/* Screen View */}
       <View style={styles.body}>{renderScreen()}</View>
 
-      {/* Icon-Based Floating Visual Card Navigation Dock */}
+      {/* Material Icons Floating Navigation Dock */}
       <View style={styles.navbarWrapper}>
         <View style={styles.navbar}>
           <NavDockItem
             label="Home"
-            icon="🏠"
+            iconOutline="home-outline"
+            iconFilled="home"
             isActive={activeTab === 'home'}
             onPress={() => setActiveTab('home')}
           />
 
           <NavDockItem
             label="Meals"
-            icon="🥗"
+            iconOutline="food-outline"
+            iconFilled="food"
             isActive={activeTab === 'nutrition'}
             onPress={() => setActiveTab('nutrition')}
           />
@@ -72,22 +77,24 @@ export default function App() {
             accessibilityLabel="Quick AI Meal Logger"
             style={styles.floatingActionBtn}
           >
-            <Text style={styles.floatingActionIcon}>+</Text>
+            <MaterialCommunityIcons name="plus" size={28} color={colors.onPrimary} />
           </Pressable>
 
           <NavDockItem
             label="Workouts"
-            icon="🏋️"
+            iconOutline="dumbbell"
+            iconFilled="dumbbell"
             isActive={activeTab === 'workouts'}
             onPress={() => setActiveTab('workouts')}
           />
 
           <NavDockItem
             label="Metrics"
-            icon="⌚"
+            iconOutline="chart-box-outline"
+            iconFilled="chart-box"
             isActive={activeTab === 'metrics'}
             onPress={() => setActiveTab('metrics')}
-            badgeDotColor={colors.accentLime}
+            badgeDotColor={colors.primary}
           />
         </View>
       </View>

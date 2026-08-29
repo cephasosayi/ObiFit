@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ImageBackground, Pressable, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../../tokens/color-system';
 
 export interface ISessionPlayerViewProps {
@@ -39,7 +40,8 @@ export const SessionPlayerView: React.FC<ISessionPlayerViewProps> = ({
           {/* Top Close Bar */}
           {onClosePlayer ? (
             <Pressable style={styles.closeBtn} onPress={onClosePlayer}>
-              <Text style={styles.closeText}>✕ Close Player</Text>
+              <MaterialCommunityIcons name="close" size={14} color="#FFFFFF" />
+              <Text style={styles.closeText}>Close Player</Text>
             </Pressable>
           ) : null}
 
@@ -72,7 +74,7 @@ export const SessionPlayerView: React.FC<ISessionPlayerViewProps> = ({
                 accessibilityRole="button"
                 accessibilityLabel="Rewind 10 seconds"
               >
-                <Text style={styles.skipText}>↺ 10</Text>
+                <MaterialCommunityIcons name="rewind-10" size={22} color={colors.onSurface} />
               </Pressable>
 
               <Pressable
@@ -81,7 +83,11 @@ export const SessionPlayerView: React.FC<ISessionPlayerViewProps> = ({
                 accessibilityRole="button"
                 accessibilityLabel={isPlaying ? 'Pause' : 'Play'}
               >
-                <Text style={styles.playIcon}>{isPlaying ? '❚❚' : '▶'}</Text>
+                <MaterialCommunityIcons
+                  name={isPlaying ? 'pause' : 'play'}
+                  size={28}
+                  color="#FFFFFF"
+                />
               </Pressable>
 
               <Pressable
@@ -90,7 +96,7 @@ export const SessionPlayerView: React.FC<ISessionPlayerViewProps> = ({
                 accessibilityRole="button"
                 accessibilityLabel="Forward 10 seconds"
               >
-                <Text style={styles.skipText}>↻ 10</Text>
+                <MaterialCommunityIcons name="fast-forward-10" size={22} color={colors.onSurface} />
               </Pressable>
             </View>
           </View>

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, Text, Image, Pressable, StyleSheet } from 'react-native';
-import { WeeklyCalendarStrip } from '../components/ui/molecules/WeeklyCalendarStrip';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { DynamicCalendarEngine } from '../components/ui/molecules/DynamicCalendarEngine';
 import { ActivityBarChartCard } from '../components/ui/molecules/ActivityBarChartCard';
 import { MetricGaugeCard } from '../components/ui/molecules/MetricGaugeCard';
 import { TrendingPlanCard } from '../components/ui/molecules/TrendingPlanCard';
-import { DailyWorkoutPlanCard } from '../components/ui/molecules/DailyWorkoutPlanCard';
-import { DailyFoodPlanCard } from '../components/ui/molecules/DailyFoodPlanCard';
+import { DailyChecklistCard } from '../components/ui/molecules/DailyChecklistCard';
 import { useWearableSync } from '../hooks/useWearableSync';
 import { useWorkoutPersistence } from '../hooks/useWorkoutPersistence';
 import { colors } from '../tokens/color-system';
@@ -14,8 +14,30 @@ export const HomeScreen: React.FC = () => {
   const { metrics, syncMetrics } = useWearableSync();
   const { unfinishedSession, clearActiveSession } = useWorkoutPersistence();
 
-  const avatarUri =
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
+  // Selected date telemetry state
+  const [selectedDayInfo, setSelectedDayInfo] = useState<{
+    dayNumber: number;
+    summaryTitle: string;
+    stepsCount: number;
+    caloriesBurned: number;
+  }>({
+    dayNumber: 28,
+    summaryTitle: 'Day 5: Upper Body & Core Stability',
+    stepsCount: 7420,
+    caloriesBurned: 480,
+  });
+
+  const handleDateSelect = (day: any) => {
+    const isFut = day.isFuture || day.dayNumber > 28;
+    setSelectedDayInfo({
+      dayNumber: day.dayNumber,
+      summaryTitle: isFut
+        ? `Day ${day.dayNumber}: Scheduled Routine (Pending Start)`
+        : day.summaryTitle || `Day ${day.dayNumber}: Scheduled Routine`,
+      stepsCount: isFut ? 0 : day.stepsCount || 6500,
+      caloriesBurned: isFut ? 0 : day.caloriesBurned || 380,
+    });
+  };
 
   const trendingPlans = [
     {
@@ -36,105 +58,91 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      {/* 1. Header Bar (User Avatar + Greeting + Bell Icon) */}
-      <View style={styles.headerRow}>
-        <View style={styles.userProfileGroup}>
-          <Image source={{ uri: avatarUri }} style={styles.avatarPhoto} />
-          <View>
-            <Text style={styles.greetingTitle}>Hi, Uche</Text>
-            <Text style={styles.greetingSub}>Welcome Back!</Text>
+      {/* 1. Full-Width Top Hero Header (Profile + Notifications + Calendar Engine) */}
+      <DynamicCalendarEngine onSelectDate={handleDateSelect} />
+
+      <View style={styles.bodyPadding}>
+        {/* Unfinished Workout Banner (Crash Recovery) */}
+        {unfinishedSession ? (
+          <View style={styles.recoveryBanner}>
+            <View style={styles.recoveryTextCol}>
+              <Text style={styles.recoveryTitle}>⚠️ Unfinished Workout Detected</Text>
+              <Text style={styles.recoverySub}>{unfinishedSession.routineTitle}</Text>
+            </View>
+            <View style={styles.recoveryActions}>
+              <Pressable style={styles.discardBtn} onPress={clearActiveSession}>
+                <Text style={styles.discardText}>Discard</Text>
+              </Pressable>
+              <Pressable style={styles.resumeBtn} onPress={() => {}}>
+                <Text style={styles.resumeText}>Resume</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
+        ) : null}
 
-        <Pressable
-          style={styles.bellBtn}
-          accessibilityRole="button"
-          accessibilityLabel="Notifications"
-        >
-          <Text style={styles.bellIcon}>🔔</Text>
-        </Pressable>
-      </View>
+        {/* 2. Recent Activity Section */}
+        <Text style={styles.sectionHeader}>Recent Activity</Text>
 
-      {/* Unfinished Workout Banner (Crash Recovery) */}
-      {unfinishedSession ? (
-        <View style={styles.recoveryBanner}>
-          <View style={styles.recoveryTextCol}>
-            <Text style={styles.recoveryTitle}>⚠️ Unfinished Workout Detected</Text>
-            <Text style={styles.recoverySub}>{unfinishedSession.routineTitle}</Text>
-          </View>
-          <View style={styles.recoveryActions}>
-            <Pressable style={styles.discardBtn} onPress={clearActiveSession}>
-              <Text style={styles.discardText}>Discard</Text>
-            </Pressable>
-            <Pressable style={styles.resumeBtn} onPress={() => {}}>
-              <Text style={styles.resumeText}>Resume</Text>
-            </Pressable>
-          </View>
-        </View>
-      ) : null}
+        {/* Steps Bar Chart Card */}
+        <ActivityBarChartCard
+          stepCount={selectedDayInfo.stepsCount}
+          distanceKm={Number((selectedDayInfo.stepsCount * 0.00075).toFixed(2))}
+          caloriesBurned={selectedDayInfo.caloriesBurned}
+        />
 
-      {/* 2. Interactive Weekly Calendar Strip */}
-      <WeeklyCalendarStrip />
-
-      {/* 3. Recent Activity Section */}
-      <Text style={styles.sectionHeader}>Recent Activity</Text>
-
-      {/* Steps Bar Chart Card */}
-      <ActivityBarChartCard
-        stepCount={metrics?.steps || 3246}
-        distanceKm={2.51}
-        caloriesBurned={123.45}
-      />
-
-      {/* Dual Metric Split Cards (Calories & Durations) */}
-      <View style={styles.dualMetricRow}>
-        <MetricGaugeCard type="calories" valueText="123.45 Kcal" />
-        <MetricGaugeCard type="durations" valueText="120 Mins" />
-      </View>
-
-      {/* 4. Trending Plans Section */}
-      <Text style={styles.sectionHeader}>Trending Plans</Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.carouselScroll}
-      >
-        {trendingPlans.map((plan) => (
-          <TrendingPlanCard
-            key={plan.id}
-            id={plan.id}
-            title={plan.title}
-            subtitle={plan.subtitle}
-            imageUri={plan.imageUri}
-            onJoinPress={() => {}}
+        {/* Dual Metric Split Cards (Calories & Durations) */}
+        <View style={styles.dualMetricRow}>
+          <MetricGaugeCard
+            type="calories"
+            valueText={`${selectedDayInfo.caloriesBurned} Kcal`}
           />
-        ))}
-      </ScrollView>
+          <MetricGaugeCard type="durations" valueText="120 Mins" />
+        </View>
 
-      {/* 5. Daily Structured Goal Plans */}
-      <Text style={styles.sectionHeader}>Today&apos;s Structured Plan</Text>
-      <DailyWorkoutPlanCard
-        dayTitle="Day 5: Upper Body & Core Stability"
-        goalName="Calisthenics & Posture"
-        durationMinutes={45}
-        onStartSession={() => {}}
-      />
+        {/* 3. Trending Plans Section */}
+        <Text style={styles.sectionHeader}>Trending Plans</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.carouselScroll}
+        >
+          {trendingPlans.map((plan) => (
+            <TrendingPlanCard
+              key={plan.id}
+              id={plan.id}
+              title={plan.title}
+              subtitle={plan.subtitle}
+              imageUri={plan.imageUri}
+              onJoinPress={() => {}}
+            />
+          ))}
+        </ScrollView>
 
-      <DailyFoodPlanCard
-        dailyTargetKcal={2200}
-        dailyTargetProtein={130}
-        onOpenMealLogger={() => {}}
-      />
+        {/* 4. Today's Checklist Section */}
+        <Text style={styles.sectionHeader}>Today&apos;s Checklist</Text>
+        <DailyChecklistCard
+          dateTitle={`Aug ${selectedDayInfo.dayNumber}`}
+          exerciseTitle={selectedDayInfo.summaryTitle}
+          exerciseDurationMinutes={45}
+          foodTargetKcal={2200}
+          currentSteps={selectedDayInfo.stepsCount}
+          targetSteps={8000}
+          currentWaterLiters={1.75}
+          targetWaterLiters={2.5}
+          onStartWorkout={() => {}}
+          onOpenMealLogger={() => {}}
+        />
 
-      {/* 6. Hardware Sync Status Tile */}
-      <View style={styles.syncCard}>
-        <Text style={styles.syncTitle}>Wearable Hardware Sync</Text>
-        <Text style={styles.syncSubtitle}>
-          Connected: {metrics?.source || 'Oraimo Watch'} • Auto-synced 14:00
-        </Text>
-        <Pressable style={styles.syncBtn} onPress={() => syncMetrics(true)}>
-          <Text style={styles.syncBtnText}>Sync Smartwatch Now</Text>
-        </Pressable>
+        {/* 5. Hardware Sync Status Tile */}
+        <View style={styles.syncCard}>
+          <Text style={styles.syncTitle}>Wearable Hardware Sync</Text>
+          <Text style={styles.syncSubtitle}>
+            Connected: {metrics?.source || 'Oraimo Watch'} • Auto-synced 14:00
+          </Text>
+          <Pressable style={styles.syncBtn} onPress={() => syncMetrics(true)}>
+            <Text style={styles.syncBtnText}>Sync Smartwatch Now</Text>
+          </Pressable>
+        </View>
       </View>
     </ScrollView>
   );
@@ -146,8 +154,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   content: {
-    padding: 20,
+    paddingHorizontal: 0,
+    paddingTop: 0,
     paddingBottom: 110,
+  },
+  bodyPadding: {
+    paddingHorizontal: 16,
   },
   headerRow: {
     flexDirection: 'row',

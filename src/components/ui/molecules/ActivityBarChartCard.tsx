@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../../../tokens/color-system';
 
 export interface IActivityBarChartCardProps {
@@ -29,10 +30,10 @@ export const ActivityBarChartCard: React.FC<IActivityBarChartCardProps> = ({
     <View style={styles.card}>
       <Pressable style={styles.headerRow} onPress={onPressDetails}>
         <View style={styles.titleRow}>
-          <Text style={styles.iconEmoji}>👣</Text>
+          <MaterialCommunityIcons name="shoe-print" size={18} color={colors.primary} />
           <Text style={styles.cardTitle}>Steps</Text>
         </View>
-        <Text style={styles.arrowIcon}>›</Text>
+        <MaterialCommunityIcons name="chevron-right" size={20} color={colors.onSurfaceVariant} />
       </Pressable>
 
       <View style={styles.contentRow}>
